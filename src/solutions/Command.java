@@ -1,7 +1,7 @@
 package solutions;
 
 import room.RoomCommandManager;
-
+//@Command
 public class Command {
 	RoomCommandManager rcm = new RoomCommandManager();
 	public void execute(String command, String room, int state) {

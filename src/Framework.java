@@ -38,6 +38,20 @@ public class Framework {
 		while(sc.hasNext()) {
 			message = sc.nextLine();
 			String command = getCommand(message).trim().toLowerCase();
+			switch(command){
+			case "register":
+				break;
+			case "start":
+				break;
+			case "go":
+				break;
+			case "hint":
+				break;
+			default:
+				//Command
+				break;	
+			}
+			
 			solutionMap.get("solutions."+command).execute(message, room, state);
 		}
 	}
