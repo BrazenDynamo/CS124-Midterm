@@ -6,5 +6,4 @@ public class Start implements Solution {
 	public void execute(String command, String room, int state) {
 		// TODO Add intro
 	}
-
 }
