@@ -23,10 +23,10 @@ public class Framework {
 		// initialize map
 		ScanResult results = new FastClasspathScanner("solutions").scan();		
 		List<String> allResults = results.getNamesOfClassesImplementing(Solution.class);
-		System.out.println(allResults);
+		// System.out.println(allResults);
 		for (String s : allResults)
 		{
-			Class c = Class.forName(s);			
+			Class c = Class.forName(s);
 			solutionMap.put(s.toLowerCase(), (Solution) c.newInstance());
 		}
 		
@@ -37,8 +37,8 @@ public class Framework {
 		// deal with command
 		while(sc.hasNext()) {
 			message = sc.nextLine();
-			String command = getCommand(message);
-			solutionMap.get(command).execute(message, room, state);
+			String command = getCommand(message).trim().toLowerCase();
+			solutionMap.get("solutions."+command).execute(message, room, state);
 		}
 	}
 	
