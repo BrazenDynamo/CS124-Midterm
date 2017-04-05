@@ -2,10 +2,12 @@ package solutions;
 
 import room.GameState;
 
-public class Start implements Solution {
+public class Go implements Solution{
 
 	@Override
 	public void execute(String command, String room, GameState state) {
-		// TODO Add intro
+		// TODO Auto-generated method stub
+		
 	}
+
 }

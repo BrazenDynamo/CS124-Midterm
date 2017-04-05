@@ -11,8 +11,9 @@ public class Framework {
 	// field for state (binary switches)
 	static Scanner sc = new Scanner(System.in);
 	static String message = "";
-	static HashMap<String, Solution> solutionMap = new HashMap<String, Solution>();
+	static HashMap<String, Class<?>> solutionMap = new HashMap<String, Class<?>>();
 	static String room = "Room1";
+	static String name;
 	public static int state = 0;
 	
 	// constructor
@@ -27,7 +28,7 @@ public class Framework {
 		for (String s : allResults)
 		{
 			Class<?> c = Class.forName(s);
-			solutionMap.put(s.toLowerCase(), (Solution) c.newInstance());
+			solutionMap.put(s.toLowerCase(), (Class<?>) c.newInstance());
 		}
 		
 		// start game
@@ -40,6 +41,7 @@ public class Framework {
 			String command = getCommand(message).trim().toLowerCase();
 			switch(command){
 			case "register":
+				
 				break;
 			case "start":
 				break;
@@ -51,8 +53,7 @@ public class Framework {
 				//Command
 				break;	
 			}
-			
-			solutionMap.get("solutions."+command).execute(message, room, state);
+	
 		}
 	}
 	
