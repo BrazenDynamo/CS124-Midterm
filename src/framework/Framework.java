@@ -1,3 +1,5 @@
+package framework;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -12,8 +14,8 @@ public class Framework {
 	static Scanner sc = new Scanner(System.in);
 	static String message = "";
 	static HashMap<String, Class<?>> solutionMap = new HashMap<String, Class<?>>();
-	static String room = "Room1";
-	static String name;
+	public static String room = "Room1";
+	public static String name;
 	public static int state = 0;
 	
 	// constructor
@@ -41,7 +43,9 @@ public class Framework {
 			String command = getCommand(message).trim().toLowerCase();
 			switch(command){
 			case "register":
-				
+				if(name == null) {
+					
+				}
 				break;
 			case "start":
 				break;
