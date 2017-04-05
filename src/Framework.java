@@ -13,7 +13,7 @@ public class Framework {
 	static String message = "";
 	static HashMap<String, Solution> solutionMap = new HashMap<String, Solution>();
 	static String room = "Room1";
-	static int state = 0;
+	public static int state = 0;
 	
 	// constructor
 	// assign solutions to hashmap
@@ -26,7 +26,7 @@ public class Framework {
 		// System.out.println(allResults);
 		for (String s : allResults)
 		{
-			Class c = Class.forName(s);
+			Class<?> c = Class.forName(s);
 			solutionMap.put(s.toLowerCase(), (Solution) c.newInstance());
 		}
 		
