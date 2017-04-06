@@ -47,7 +47,7 @@ public class FrameworkDemo {
 				methodList.get(command).invoke(null, ar);
 			}
 			else {
-				methodList.get("COMMAND").invoke(null, methodArgs);
+				methodList.get("COMMAND").invoke(null, (Object)methodArgs);
 			}
 		}
 	}
@@ -95,11 +95,16 @@ public class FrameworkDemo {
 		if(username == null){
 			System.out.println("Please register your username before starting the game.");
 		}
-		else{
+		else if(started == false)
+		{
 			started = true;
 			currentRoom = "Room1";
 			gameState = (Integer) rcm.processRoom(currentRoom, gameState, "checkRoom").get("status");
 			System.out.println(rcm.processRoom(currentRoom, gameState, "checkRoom").get("message"));
+		}
+		else
+		{
+			System.out.println("The game has already started, " + username + ". Please try a different command.");
 		}
 	}
 	
@@ -148,7 +153,8 @@ public class FrameworkDemo {
 		}
 		else{
 			String joinedString = String.join(" ", args);
-			rcm.processRoom(currentRoom, gameState, joinedString);
+			System.out.println(rcm.processRoom(currentRoom, gameState, joinedString).get("message"));
+			// System.out.println((Integer) rcm.processRoom(currentRoom, gameState, joinedString).get("status"));
 		}
 	}
 }
