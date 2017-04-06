@@ -9,17 +9,21 @@ import java.util.Scanner;
 
 import framework.SmsCommand;
 import framework.SmsParser;
+import room.RoomCommandManager;
 
 public class FrameworkDemo {
 	public static final String GAMENAME = "MyGame";
 	
-	static String username;
 	static ArrayList<Method> methodList1;
 	static ArrayList<String> methodNames;
-	static String currentRoom;
-	static boolean started;
 	
 	static HashMap<String, Method> methodList;
+	static RoomCommandManager rcm;
+	
+	static String username;
+	static int gameState;
+	static String currentRoom;
+	static boolean started;
 	
 	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		init();
@@ -61,6 +65,10 @@ public class FrameworkDemo {
 				methodList.put(a.command(), m);
 			}
 		}
+		
+		rcm = new RoomCommandManager();
+		
+		gameState = 0;
 	}
 	
 	@SmsCommand(command="REGISTER")
@@ -90,7 +98,7 @@ public class FrameworkDemo {
 		else{
 			started = true;
 			currentRoom = "Room1";
-			
+			gameState = (Integer) rcm.processRoom(currentRoom, gameState, "checkRoom").get("status");
 		}
 	}
 	
@@ -106,5 +114,19 @@ public class FrameworkDemo {
 		else{
 			currentRoom = args[1];
 		}
+	}
+	
+	@SmsCommand(command="HINT")
+	static void hint(String[] args) throws ClassNotFoundException {
+		Class<?> c = Class.forName(currentRoom);
+		
+		Method[] methods = c.getDeclaredMethods();
+		
+		System.out.println("For a moment, you ponder what you can do here. You realize that you can:");
+		for(Method m : methods) {
+			System.out.println(m.getName());
+		}
+		
+		System.out.println("");
 	}
 }
