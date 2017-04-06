@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -74,17 +75,22 @@ public class FrameworkDemo {
 	@SmsCommand(command="REGISTER")
 	static void register(String[] args) {
 		String name = "";
-		
-		for(String s : args) {
+		String[] nameArr = Arrays.copyOfRange(args, 1, args.length);
+		for(String s : nameArr) {
 			name += s + " ";
 		}
 		
-		if (username == null) {
+		if (username == null && name.length() > 0) {
 			username = name;
 			System.out.println("Username registered.");
 			System.out.println("Hello, " + name + "! " + "Welcome to " + GAMENAME + "!");
 		}
-		else {
+		else if (name.length() == 0)
+		{
+			System.out.println("Please enter a valid name");
+		}
+		else
+		{
 			System.out.println("Name already registered. Hello, " + name + "!");
 		}
 	}
@@ -105,6 +111,8 @@ public class FrameworkDemo {
 		else
 		{
 			System.out.println("The game has already started, " + username + ". Please try a different command.");
+			// System.out.println("CONFIRM RESTART. ALL PROGRESS WILL BE RESET. Y/N?");
+			
 		}
 	}
 	
