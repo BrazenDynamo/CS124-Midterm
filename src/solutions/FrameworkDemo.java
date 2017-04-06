@@ -99,6 +99,7 @@ public class FrameworkDemo {
 			started = true;
 			currentRoom = "Room1";
 			gameState = (Integer) rcm.processRoom(currentRoom, gameState, "checkRoom").get("status");
+			System.out.println(rcm.processRoom(currentRoom, gameState, "checkRoom").get("message"));
 		}
 	}
 	
@@ -112,7 +113,8 @@ public class FrameworkDemo {
 			System.out.println("Please start the game by sending START.");
 		}
 		else{
-			currentRoom = args[1];
+			currentRoom = args[1].substring(0, 1).toUpperCase() + args[1].substring(1).toLowerCase()  ;
+			System.out.println(rcm.processRoom(currentRoom, gameState, "checkRoom").get("message"));
 		}
 	}
 	
