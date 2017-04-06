@@ -16,6 +16,10 @@ public class FrameworkDemo {
 	static ArrayList<String> methodNames;
 	
 	static HashMap<String, Method> methodList;
+	// Check whether the user has STARTed the game
+	static boolean started = false;
+	// Default Room at game start
+	public static String room = "Room1";
 	
 	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		init();
@@ -74,5 +78,60 @@ public class FrameworkDemo {
 			System.out.println("no");
 		}
 		System.out.println("Hi, " + name);
+	}
+	
+	@SmsCommand(command = "START")
+	static void start()
+	{
+		if(username == null){
+			System.out.println("Please register your username before starting the game.");
+		}
+		else{
+			started = true;
+			room = "Room1";
+			//System.out.println("Welcome to " + gamename);
+		}
+	}
+
+	@SmsCommand(command = "GO")
+	static void go(String roomSelected)
+	{
+		if(username == null){
+			System.out.println("Please register your username before starting the game.");
+		}
+		else if( started == false ){
+			System.out.println("Please start the game by sending START.");
+		}
+		else{
+			room = roomSelected;
+		}
+	}
+
+	@SmsCommand(command = "HINT")
+	static void hint()
+	{
+		if(username == null){
+			System.out.println("Please register your username before starting the game.");
+		}
+		else if( started == false ){
+			System.out.println("Please start the game by sending START.");
+		}
+		else{
+			// get declared methods and parameters of target class
+		}
+	}
+
+	@SmsCommand(command = "COMMAND")
+	static void command(String roomSelected)
+	{
+		if(username == null){
+			System.out.println("Please register your username before starting the game.");
+		}
+		else if( started == false ){
+			System.out.println("Please start the game by sending START.");
+		}
+		else{
+			// pass command to room command manager
+		}
 	}
 }
