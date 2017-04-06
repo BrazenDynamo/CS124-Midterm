@@ -11,9 +11,13 @@ import framework.SmsCommand;
 import framework.SmsParser;
 
 public class FrameworkDemo {
+	public static final String GAMENAME = "MyGame";
+	
 	static String username;
 	static ArrayList<Method> methodList1;
 	static ArrayList<String> methodNames;
+	static String currentRoom;
+	static boolean started;
 	
 	static HashMap<String, Method> methodList;
 	
@@ -69,10 +73,38 @@ public class FrameworkDemo {
 		
 		if (username == null) {
 			username = name;
+			System.out.println("Username registered.");
+			System.out.println("Hello, " + name + "! " + "Welcome to " + GAMENAME + "!");
 		}
 		else {
-			System.out.println("no");
+			System.out.println("Name already registered. Hello, " + name + "!");
 		}
-		System.out.println("Hi, " + name);
+	}
+	
+	@SmsCommand(command = "START")
+	static void start()
+	{
+		if(username == null){
+			System.out.println("Please register your username before starting the game.");
+		}
+		else{
+			started = true;
+			currentRoom = "Room1";
+			
+		}
+	}
+	
+	@SmsCommand(command = "GO")
+	static void go(String[] args)
+	{
+		if(username == null){
+			System.out.println("Please register your username before starting the game.");
+		}
+		else if( started == false ){
+			System.out.println("Please start the game by sending START.");
+		}
+		else{
+			currentRoom = args[1];
+		}
 	}
 }
