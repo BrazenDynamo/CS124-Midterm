@@ -118,15 +118,20 @@ public class FrameworkDemo {
 	
 	@SmsCommand(command="HINT")
 	static void hint(String[] args) throws ClassNotFoundException {
-		Class<?> c = Class.forName(currentRoom);
+		if(started) {
+			Class<?> c = Class.forName(currentRoom);
 		
-		Method[] methods = c.getDeclaredMethods();
-		
-		System.out.println("For a moment, you ponder what you can do here. You realize that you can:");
-		for(Method m : methods) {
-			System.out.println(m.getName());
+			Method[] methods = c.getDeclaredMethods();
+			
+			System.out.println("For a moment, you ponder what you can do here. You realize that you can:");
+			for(Method m : methods) {
+				System.out.println(m.getName());
+			}
+			
+			System.out.println("");
 		}
-		
-		System.out.println("");
+		else {
+			System.out.println("You haven't started the game!");
+		}
 	}
 }
