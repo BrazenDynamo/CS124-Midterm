@@ -134,4 +134,19 @@ public class FrameworkDemo {
 			System.out.println("You haven't started the game!");
 		}
 	}
+	
+	@SmsCommand(command = "COMMAND")
+	static void command(String[] args)
+	{
+		if(username == null){
+			System.out.println("Please register your username before starting the game.");
+		}
+		else if( started == false ){
+			System.out.println("Please start the game by sending START.");
+		}
+		else{
+			String joinedString = String.join(" ", args);
+			rcm.processRoom(currentRoom, gameState, joinedString);
+		}
+	}
 }
