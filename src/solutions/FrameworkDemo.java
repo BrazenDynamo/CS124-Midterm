@@ -90,7 +90,7 @@ public class FrameworkDemo {
 	}
 	
 	@SmsCommand(command = "START")
-	static void start()
+	static void start(String[] args)
 	{
 		if(username == null){
 			System.out.println("Please register your username before starting the game.");
