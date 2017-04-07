@@ -1,5 +1,9 @@
 package solutions;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,7 +30,7 @@ public class FrameworkDemo {
 	static String currentRoom;
 	static boolean started;
 	
-	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		init();
 		
 		Scanner sc = new Scanner(System.in);
@@ -42,6 +46,27 @@ public class FrameworkDemo {
 			Object[] ar = new Object[1];
 			ar[0] = methodArgs;
 			
+			if(methodList.containsKey(command)) {
+				methodList.get(command).invoke(null, ar);
+			}
+			else {
+				methodList.get("COMMAND").invoke(null, (Object)methodArgs);
+			}
+		}
+		
+		FileReader file = new FileReader("src/text.txt");
+		BufferedReader br = new BufferedReader(file);
+		String str;
+		
+		while((str = br.readLine()) != null) {
+			ArrayList<String> tokens = SmsParser.parseSms(str);
+			
+			String command = tokens.get(0).toUpperCase();
+			String[] methodArgs = new String[tokens.size() - 1]; 
+			methodArgs = tokens.toArray(methodArgs);
+			
+			Object[] ar = new Object[1];
+			ar[0] = methodArgs;
 			
 			if(methodList.containsKey(command)) {
 				methodList.get(command).invoke(null, ar);
@@ -135,19 +160,19 @@ public class FrameworkDemo {
 	@SmsCommand(command="HINT")
 	static void hint(String[] args) throws ClassNotFoundException {
 		if(started) {
-//			Class<?> c = Class.forName("room." + currentRoom);
-//		
-//			Method[] methods = c.getDeclaredMethods();
-//			
-//			System.out.println("For a moment, you ponder what you can do here. You realize that you can:");
-//			for(Method m : methods) {
-//				System.out.println(m.getName());
-//			}
-//			
-//			System.out.println("");
-			HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
-			System.out.println(result.get("message"));
-			gameState = (int) result.get("status");
+			Class<?> c = Class.forName("room." + currentRoom);
+		
+			Method[] methods = c.getDeclaredMethods();
+			
+			System.out.println("For a moment, you ponder what you can do here. You realize that you can:");
+			for(Method m : methods) {
+				System.out.println(m.getName());
+			}
+			
+			System.out.println("");
+//			HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
+//			System.out.println(result.get("message"));
+//			gameState = (int) result.get("status");
 		}
 		else {
 			System.out.println("You haven't started the game!");
