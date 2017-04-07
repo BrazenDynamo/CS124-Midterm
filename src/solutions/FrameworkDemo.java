@@ -132,6 +132,12 @@ public class FrameworkDemo {
 			gameState = (Integer) rcm.processRoom(currentRoom, gameState, "checkRoom").get("status");
 			System.out.println(rcm.processRoom(currentRoom, gameState, "checkRoom").get("message"));
 		}
+		else if((gameState & 256) == 256) {
+			currentRoom = "Room1";
+			gameState = 0;
+			System.out.println("Restarting...");
+			System.out.println(rcm.processRoom(currentRoom, gameState, "checkRoom").get("message"));
+		}
 		else
 		{
 			System.out.println("The game has already started, " + username + ". Please try a different command.");
@@ -208,7 +214,7 @@ public class FrameworkDemo {
 			}
 			catch (RuntimeException e) {
 				if(e.getMessage().substring(0, 2).equals("No")) {
-					System.out.println("You can't do that.");
+					System.out.println("You can't do that here.");
 				}
 			}
 		}
