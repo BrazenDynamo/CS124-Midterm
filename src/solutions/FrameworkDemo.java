@@ -150,10 +150,20 @@ public class FrameworkDemo {
 			System.out.println("Please start the game by sending START.");
 		}
 		else{
-			currentRoom = args[1].substring(0, 1).toUpperCase() + args[1].substring(1).toLowerCase()  ;
-			HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
-			System.out.println(result.get("message"));
-			gameState = (int) result.get("status");
+			if(args.length >= 2) {
+				try {
+					currentRoom = "R" + args[1].substring(1).toLowerCase()  ;
+					HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
+					System.out.println(result.get("message"));
+					gameState = (int) result.get("status");
+				}
+				catch (Exception e) {
+					System.out.println("You have no idea where that is.");
+				}
+			}
+			else {
+				System.out.println("Go where?");
+			}
 		}
 	}
 	
@@ -169,7 +179,7 @@ public class FrameworkDemo {
 				System.out.println(m.getName());
 			}
 			
-			System.out.println("");
+			System.out.println("go <room number>");
 //			HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
 //			System.out.println(result.get("message"));
 //			gameState = (int) result.get("status");
