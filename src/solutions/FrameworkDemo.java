@@ -36,7 +36,8 @@ public class FrameworkDemo {
 		Scanner sc = new Scanner(System.in);
 		
 		while(sc.hasNext()) {
-			String message = sc.nextLine();
+			String message = sc.nextLine().trim();
+			if(message.equals("")) continue;
 			ArrayList<String> tokens = SmsParser.parseSms(message);
 			
 			String command = tokens.get(0).toUpperCase();
@@ -157,14 +158,19 @@ public class FrameworkDemo {
 		}
 		else{
 			if(args.length >= 2) {
+				String oldRoom = currentRoom;
 				try {
-					currentRoom = "R" + args[1].substring(1).toLowerCase()  ;
-					HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
-					System.out.println(result.get("message"));
-					gameState = (int) result.get("status");
+					if(("R" + args[1].toLowerCase().substring(1)).equals(currentRoom)) System.out.println("You're already here.");
+					else {
+						currentRoom = "R" + args[1].substring(1).toLowerCase();
+						HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
+						System.out.println(result.get("message"));
+						gameState = (int) result.get("status");
+					}
 				}
 				catch (Exception e) {
 					System.out.println("You have no idea where that is.");
+					currentRoom = oldRoom;
 				}
 			}
 			else {
