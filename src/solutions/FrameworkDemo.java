@@ -126,7 +126,9 @@ public class FrameworkDemo {
 		}
 		else{
 			currentRoom = args[1].substring(0, 1).toUpperCase() + args[1].substring(1).toLowerCase()  ;
-			System.out.println(rcm.processRoom(currentRoom, gameState, "checkRoom").get("message"));
+			HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
+			System.out.println(result.get("message"));
+			gameState = (int) result.get("status");
 		}
 	}
 	
@@ -162,11 +164,18 @@ public class FrameworkDemo {
 			System.out.println("Please start the game by sending START.");
 		}
 		else{
-			String joinedString = String.join(" ", args);
-			HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, joinedString);
-			System.out.println(result.get("message"));
-			gameState = (int) result.get("status");
-			// System.out.println((Integer) rcm.processRoom(currentRoom, gameState, joinedString).get("status"));
+			try {
+				String joinedString = String.join(" ", args);
+				HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, joinedString);
+				System.out.println(result.get("message"));
+				gameState = (int) result.get("status");
+				// System.out.println((Integer) rcm.processRoom(currentRoom, gameState, joinedString).get("status"));
+			}
+			catch (RuntimeException e) {
+				if(e.getMessage().substring(0, 2).equals("No")) {
+					System.out.println("You can't do that.");
+				}
+			}
 		}
 	}
 }
