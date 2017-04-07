@@ -44,7 +44,6 @@ public class FrameworkDemo {
 			
 			
 			if(methodList.containsKey(command)) {
-				System.out.println("invoking " + command + "\n");
 				methodList.get(command).invoke(null, ar);
 			}
 			else {
@@ -83,7 +82,7 @@ public class FrameworkDemo {
 		if (username == null && name.length() > 0) {
 			username = name;
 			System.out.println("Username registered.");
-			System.out.println("Hello, " + name + "! " + "Welcome to " + GAMENAME + "!");
+			System.out.println("Hello, " + username + "! " + "Welcome to " + GAMENAME + "!");
 		}
 		else if (name.length() == 0)
 		{
@@ -91,7 +90,7 @@ public class FrameworkDemo {
 		}
 		else
 		{
-			System.out.println("Name already registered. Hello, " + name + "!");
+			System.out.println("Name already registered. Hello, " + username + "!");
 		}
 	}
 	
@@ -134,16 +133,19 @@ public class FrameworkDemo {
 	@SmsCommand(command="HINT")
 	static void hint(String[] args) throws ClassNotFoundException {
 		if(started) {
-			Class<?> c = Class.forName(currentRoom);
-		
-			Method[] methods = c.getDeclaredMethods();
-			
-			System.out.println("For a moment, you ponder what you can do here. You realize that you can:");
-			for(Method m : methods) {
-				System.out.println(m.getName());
-			}
-			
-			System.out.println("");
+//			Class<?> c = Class.forName("room." + currentRoom);
+//		
+//			Method[] methods = c.getDeclaredMethods();
+//			
+//			System.out.println("For a moment, you ponder what you can do here. You realize that you can:");
+//			for(Method m : methods) {
+//				System.out.println(m.getName());
+//			}
+//			
+//			System.out.println("");
+			HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
+			System.out.println(result.get("message"));
+			gameState = (int) result.get("status");
 		}
 		else {
 			System.out.println("You haven't started the game!");
@@ -161,7 +163,9 @@ public class FrameworkDemo {
 		}
 		else{
 			String joinedString = String.join(" ", args);
-			System.out.println(rcm.processRoom(currentRoom, gameState, joinedString).get("message"));
+			HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, joinedString);
+			System.out.println(result.get("message"));
+			gameState = (int) result.get("status");
 			// System.out.println((Integer) rcm.processRoom(currentRoom, gameState, joinedString).get("status"));
 		}
 	}
