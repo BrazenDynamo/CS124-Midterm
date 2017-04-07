@@ -32,49 +32,54 @@ public class FrameworkDemo {
 	
 	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		init();
-		
-		Scanner sc = new Scanner(System.in);
-		
-		while(sc.hasNext()) {
-			String message = sc.nextLine().trim();
-			if(message.equals("")) continue;
-			ArrayList<String> tokens = SmsParser.parseSms(message);
-			
-			String command = tokens.get(0).toUpperCase();
-			String[] methodArgs = new String[tokens.size() - 1]; 
-			methodArgs = tokens.toArray(methodArgs);
-			
-			Object[] ar = new Object[1];
-			ar[0] = methodArgs;
-			
-			if(methodList.containsKey(command)) {
-				methodList.get(command).invoke(null, ar);
-			}
-			else {
-				methodList.get("COMMAND").invoke(null, (Object)methodArgs);
-			}
-		}
-		
+		try{
 		FileReader file = new FileReader("src/text.txt");
 		BufferedReader br = new BufferedReader(file);
 		String str;
 		
-		while((str = br.readLine()) != null) {
-			ArrayList<String> tokens = SmsParser.parseSms(str);
-			
-			String command = tokens.get(0).toUpperCase();
-			String[] methodArgs = new String[tokens.size() - 1]; 
-			methodArgs = tokens.toArray(methodArgs);
-			
-			Object[] ar = new Object[1];
-			ar[0] = methodArgs;
-			
-			if(methodList.containsKey(command)) {
-				methodList.get(command).invoke(null, ar);
+		while((str = br.readLine()) != null) 
+		{
+				ArrayList<String> tokens = SmsParser.parseSms(str);
+				
+				String command = tokens.get(0).toUpperCase();
+				String[] methodArgs = new String[tokens.size() - 1]; 
+				methodArgs = tokens.toArray(methodArgs);
+				
+				Object[] ar = new Object[1];
+				ar[0] = methodArgs;
+				
+				if(methodList.containsKey(command)) {
+					methodList.get(command).invoke(null, ar);
+				}
+				else {
+					methodList.get("COMMAND").invoke(null, (Object)methodArgs);
+				}
 			}
-			else {
-				methodList.get("COMMAND").invoke(null, (Object)methodArgs);
+		}
+		catch(FileNotFoundException e){
+			System.out.println("Input file not found. Switching to command-line input mode...");
+			Scanner sc = new Scanner(System.in);
+			
+			while(sc.hasNext()) {
+				String message = sc.nextLine().trim();
+				if(message.equals("")) continue;
+				ArrayList<String> tokens = SmsParser.parseSms(message);
+				
+				String command = tokens.get(0).toUpperCase();
+				String[] methodArgs = new String[tokens.size() - 1]; 
+				methodArgs = tokens.toArray(methodArgs);
+				
+				Object[] ar = new Object[1];
+				ar[0] = methodArgs;
+				
+				if(methodList.containsKey(command)) {
+					methodList.get(command).invoke(null, ar);
+				}
+				else {
+					methodList.get("COMMAND").invoke(null, (Object)methodArgs);
+				}
 			}
+
 		}
 	}
 	
@@ -165,7 +170,7 @@ public class FrameworkDemo {
 						currentRoom = "R" + args[1].substring(1).toLowerCase();
 						HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, "checkRoom");
 						System.out.println(result.get("message"));
-						gameState = (int) result.get("status");
+						gameState = (Integer) result.get("status");
 					}
 				}
 				catch (Exception e) {
@@ -215,7 +220,7 @@ public class FrameworkDemo {
 				String joinedString = String.join(" ", args);
 				HashMap<String, Object> result = rcm.processRoom(currentRoom, gameState, joinedString);
 				System.out.println(result.get("message"));
-				gameState = (int) result.get("status");
+				gameState = (Integer) result.get("status");
 				// System.out.println((Integer) rcm.processRoom(currentRoom, gameState, joinedString).get("status"));
 			}
 			catch (RuntimeException e) {
